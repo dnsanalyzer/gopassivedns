@@ -79,25 +79,19 @@ func (lo *logOptions) LogToFluentd() bool {
 
 // codebeat:disable[TOO_MANY_IVARS]
 type dnsLogEntry struct {
-	Query_ID             uint16 `json:"query_id"`
-	Response_Code        int    `json:"rcode"`
+	Query_ID             uint16 `json:"qi"`
+	Response_Code        int    `json:"rc"`
 	Question             string `json:"q"`
-	Question_Type        string `json:"qtype"`
+	Question_Type        string `json:"qt"`
 	Answer               string `json:"a"`
-	Answer_Type          string `json:"atype"`
-	TTL                  uint32 `json:"ttl"`
-	Server               net.IP `json:"dst"`
-	Client               net.IP `json:"src"`
-	Timestamp            string `json:"tstamp"`
-	Elapsed              int64  `json:"elapsed"`
-	Client_Port          string `json:"sport"`
+	TTL                  uint32 `json:"t"`
+	Server               net.IP `json:"d"`
+	Client               net.IP `json:"s"`
+	Timestamp            string `json:"ts"`
+	Elapsed              int64  `json:"e"`
 	Level                string `json:"level"` // syslog level
-	Length               int    `json:"bytes"`
-	Proto                string `json:"protocol"`
-	Truncated            bool   `json:"truncated"`
+	Length               int    `json:"b"`
 	Authoritative_Answer bool   `json:"aa"`
-	Recursion_Desired    bool   `json:"rd"`
-	Recursion_Available  bool   `json:"ra"`
 
 	encoded []byte //to hold the marshaled data structure
 	err     error  //encoding errors
