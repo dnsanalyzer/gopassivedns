@@ -135,6 +135,7 @@ func initLogEntry(
 	srcIP net.IP,
 	dstIP net.IP,
 	length *int,
+	protocol *string,
 	question layers.DNS,
 	reply layers.DNS,
 	inserted time.Time,
@@ -241,6 +242,7 @@ func handleDns(
 	dstPort string,
 	dstIP net.IP,
 	length *int,
+	protocol *string,
 	packetTime time.Time,
 	stats *statsd.StatsdBuffer) {
 	//skip non-query stuff (Updates, AXFRs, etc)
