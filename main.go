@@ -373,6 +373,7 @@ func handlePacket(
 					dstPort,
 					dstIP,
 					packet.GetSize(),
+					packet.GetProto(),
 					packetTime,
 					stats)
 			} else if packet.HasTCPLayer() {
@@ -393,6 +394,7 @@ func handlePacket(
 					dstPort,
 					dstIP,
 					packet.GetSize(),
+					packet.GetProto(),
 					packetTime,
 					stats)
 				if stats != nil {
