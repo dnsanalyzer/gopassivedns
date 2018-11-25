@@ -273,11 +273,11 @@ func handleDns(
 		//if we just got the reply
 		if dns.QR {
 			log.Debug("Got 'answer' leg of query ID: " + strconv.Itoa(int(dns.ID)))
-			initLogEntry(syslogPriority, srcIP, srcPort, dstIP, length, protocol, item.entry, *dns, item.inserted, &logs)
+			initLogEntry(syslogPriority, srcIP, dstIP, length, protocol, item.entry, *dns, item.inserted, &logs)
 		} else {
 			//we just got the question, so we should already have the reply
 			log.Debug("Got the 'question' leg of query ID " + strconv.Itoa(int(dns.ID)))
-			initLogEntry(syslogPriority, srcIP, srcPort, dstIP, length, protocol, *dns, item.entry, item.inserted, &logs)
+			initLogEntry(syslogPriority, srcIP, dstIP, length, protocol, *dns, item.entry, item.inserted, &logs)
 		}
 		conntable.RUnlock()
 		conntable.Lock()
