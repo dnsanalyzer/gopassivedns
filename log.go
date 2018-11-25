@@ -263,7 +263,7 @@ func logConnSyslog(logC chan dnsLogEntry, opts *logOptions) {
 
 //logs to fluentd via a unix socket
 func logConnFluentd(logC chan dnsLogEntry, opts *logOptions) {
-	Tag := opts.SensorName + ".service"
+	Tag := opts.SensorName
 	tag, _ := msgpack.Marshal(Tag)
 
 	conn := fluentdSocket(opts.FluentdSocket)
