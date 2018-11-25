@@ -133,10 +133,8 @@ func (d *dnsStream) run() {
 func initLogEntry(
 	syslogPriority string,
 	srcIP net.IP,
-	srcPort string,
 	dstIP net.IP,
 	length *int,
-	protocol *string,
 	question layers.DNS,
 	reply layers.DNS,
 	inserted time.Time,
@@ -162,16 +160,11 @@ func initLogEntry(
 
 		*logs = append(*logs, dnsLogEntry{
 			Level:                syslogPriority,
-			Query_ID:             reply.ID,
 			Question:             string(question.Questions[0].Name),
 			Response_Code:        int(reply.ResponseCode),
 			Question_Type:        TypeString(question.Questions[0].Type),
 			Answer:               reply.ResponseCode.String(),
-			Answer_Type:          "",
 			TTL:                  0,
-			Authoritative_Answer: reply.AA,
-			Recursion_Desired:    question.RD,
-			Recursion_Available:  question.RA,
 
 			//this is the answer packet, which comes from the server...
 			Server: srcIP,
@@ -179,22 +172,17 @@ func initLogEntry(
 			Client:      dstIP,
 			Timestamp:   time.Now().UTC().String(),
 			Elapsed:     time.Now().Sub(inserted).Nanoseconds(),
-			Client_Port: srcPort,
 			Length:      *length,
-			Proto:       *protocol,
-			Truncated:   reply.TC,
 		})
 
 	} else {
 		for _, answer := range reply.Answers {
 
 			*logs = append(*logs, dnsLogEntry{
-				Query_ID:      reply.ID,
 				Question:      string(question.Questions[0].Name),
 				Response_Code: int(reply.ResponseCode),
 				Question_Type: TypeString(question.Questions[0].Type),
 				Answer:        RrString(answer),
-				Answer_Type:   TypeString(answer.Type),
 				TTL:           answer.TTL,
 				//this is the answer packet, which comes from the server...
 				Server: srcIP,
@@ -203,14 +191,8 @@ func initLogEntry(
 				//Timestamp:            time.Now().UTC().Format(time.RFC3339Nano),
 				Timestamp:            time.Now().UTC().String(),
 				Elapsed:              time.Now().Sub(inserted).Nanoseconds(),
-				Client_Port:          srcPort,
 				Level:                syslogPriority,
-				Authoritative_Answer: reply.AA,
-				Recursion_Desired:    question.RD,
-				Recursion_Available:  question.RA,
 				Length:               *length,
-				Proto:                *protocol,
-				Truncated:            reply.TC,
 			})
 		}
 	}
@@ -259,7 +241,6 @@ func handleDns(
 	dstPort string,
 	dstIP net.IP,
 	length *int,
-	protocol *string,
 	packetTime time.Time,
 	stats *statsd.StatsdBuffer) {
 	//skip non-query stuff (Updates, AXFRs, etc)
@@ -390,7 +371,6 @@ func handlePacket(
 					dstPort,
 					dstIP,
 					packet.GetSize(),
-					packet.GetProto(),
 					packetTime,
 					stats)
 			} else if packet.HasTCPLayer() {
@@ -411,7 +391,6 @@ func handlePacket(
 					dstPort,
 					dstIP,
 					packet.GetSize(),
-					packet.GetProto(),
 					packetTime,
 					stats)
 				if stats != nil {
