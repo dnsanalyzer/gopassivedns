@@ -79,8 +79,7 @@ func (lo *logOptions) LogToFluentd() bool {
 
 // codebeat:disable[TOO_MANY_IVARS]
 type dnsLogEntry struct {
-	Query_ID             uint16 `json:"qi"`
-	Response_Code        int    `json:"rc"`
+	Response_Code        int    `json:"r"`
 	Question             string `json:"q"`
 	Question_Type        string `json:"qt"`
 	Answer               string `json:"a"`
@@ -89,9 +88,7 @@ type dnsLogEntry struct {
 	Client               net.IP `json:"s"`
 	Timestamp            string `json:"ts"`
 	Elapsed              int64  `json:"e"`
-	Level                string `json:"level"` // syslog level
 	Length               int    `json:"b"`
-	Authoritative_Answer bool   `json:"aa"`
 
 	encoded []byte //to hold the marshaled data structure
 	err     error  //encoding errors
