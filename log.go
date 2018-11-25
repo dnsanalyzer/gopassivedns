@@ -88,6 +88,7 @@ type dnsLogEntry struct {
 	Client               net.IP `json:"s"`
 	Timestamp            string `json:"ts"`
 	Elapsed              int64  `json:"e"`
+	Level                string `json:"level"` // syslog level
 	Length               int    `json:"b"`
 
 	encoded []byte //to hold the marshaled data structure
